@@ -1648,7 +1648,7 @@ public class WeekView extends View {
      * @param hour The time. Limit: 0-23.
      * @return The string representation of the time.
      */
-    private String getTimeString(int hour) {
+    protected String getTimeString(int hour) {
         String amPm;
         if (hour >= 0 && hour < 12) amPm = "AM";
         else amPm = "PM";
@@ -1674,15 +1674,14 @@ public class WeekView extends View {
      * @param date The date.
      * @return The first the characters of the day name.
      */
-    private String getDayName(Calendar date) {
-        int dayOfWeek = date.get(Calendar.DAY_OF_WEEK);
-        if (Calendar.MONDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "M" : "MON");
-        else if (Calendar.TUESDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "T" : "TUE");
-        else if (Calendar.WEDNESDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "W" : "WED");
-        else if (Calendar.THURSDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "T" : "THU");
-        else if (Calendar.FRIDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "F" : "FRI");
-        else if (Calendar.SATURDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "S" : "SAT");
-        else if (Calendar.SUNDAY == dayOfWeek) return (mDayNameLength == LENGTH_SHORT ? "S" : "SUN");
-        return "";
-    }
+    protected String getDayName(Calendar date) {
+        SimpleDateFormat sdf;
+        if(mDayNameLength==LENGTH_SHORT) sdf= new SimpleDateFormat("EEEEE");// Tuesday == T
+        else sdf = new SimpleDateFormat("EEE"); // Tuesday == Tue
+        try{
+            return sdf.format(date.getTime()).toUpperCase();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
 }
